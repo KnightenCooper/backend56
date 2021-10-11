@@ -7,6 +7,8 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const cors = require('cors') // Connect to heroku
+
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -17,6 +19,19 @@ const port = process.env.PORT || 3000; // connect to heroku or else use localhos
 
 
 const app = express();
+
+const corsOptions = { // connect to heroku
+  origin: "https://cryptic-ravine-41190.herokuapp.com/",
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+const options = {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  // useCreateIndex: true,
+  // useFindAndModify: false,
+  family: 4
+};
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions'
